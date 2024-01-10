@@ -1,4 +1,4 @@
-package com.tlannigan.betterhaveagoodreason;
+package com.tlannigan.explainyourself;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
