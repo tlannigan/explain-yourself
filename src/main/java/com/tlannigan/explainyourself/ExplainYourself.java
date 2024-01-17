@@ -2,7 +2,6 @@ package com.tlannigan.explainyourself;
 
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +15,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,17 +29,17 @@ public class ExplainYourself {
 
     public ExplainYourself() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
         modEventBus.addListener(this::commonSetup);
-
-        MinecraftForge.EVENT_BUS.register(this);
+        modEventBus.register(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        saveCurrentModList();
-        printChangedMods();
+//        LOGGER.error("COMMON SETUP CALLED");
+//        saveCurrentModList();
+//        printChangedMods();
+        updateModList();
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
@@ -106,5 +108,19 @@ public class ExplainYourself {
             }
         });
         return changedItems;
+    }
+
+    public void updateModList() {
+        try {
+            File changedMods = new File("config/explainyourself.txt");
+            if (changedMods.createNewFile()) {
+                // New file was creates
+                FileWriter writer = new FileWriter("config/explainyourself.txt");
+            } else {
+                // File exists already
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
